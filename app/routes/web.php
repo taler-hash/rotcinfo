@@ -11,12 +11,7 @@ use App\Http\Controllers\ClassYearController;
 use Illuminate\Support\Facades\Cache;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return Inertia::render('Announcement/ShowAnnouncement');
 });
 
 Route::get('/dashboard', function () {
@@ -76,6 +71,22 @@ Route::middleware('auth')->group(function () {
             Route::delete('/delete', 'delete')->name('delete');
             Route::delete('/count', 'count')->name('count');
         });
+
+        //Announcement
+        Route::controller(AnnouncementController::class)
+        ->prefix('/announcements')
+        ->middleware(['role:admin|s1-admin'])
+        ->name('announcements.')
+        ->group(function() {
+            Route::get('/', 'display')->name('display');
+            Route::get('/index', 'index')->name('index');
+            Route::get('/show', 'show')->name('show');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/edit', 'edit')->name('edit');
+            Route::put('/update', 'update')->name('update');
+            Route::delete('/delete', 'delete')->name('delete');
+            Route::delete('/count', 'count')->name('count');
+        });
 });
 
 Route::controller(CadetController::class)
@@ -86,5 +97,6 @@ Route::controller(CadetController::class)
     Route::post('/store', 'store')->name('store');
     Route::get('/track', 'track')->name('track');
 });
+Route::get('/announcements/public', [AnnouncementController::class, 'index'])->name('announcements.public.index');
 
 require __DIR__.'/auth.php';

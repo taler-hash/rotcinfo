@@ -70,12 +70,13 @@ const items = ref<{ label: string, icon: string, route?: any, canSee: boolean, m
         method: 'get',
         canSee: true
     },
-    // {
-    //     label: 'Announcements',
-    //     icon: 'pi pi-flag',
-    //     route: route('announcements.display'),
-    //     canSee: true
-    // },
+    {
+        label: 'Announcements',
+        icon: 'pi pi-info',
+        route: route('announcements.display'),
+        method: 'get',
+        canSee: true
+    },
     {
         label: 'Log out',
         icon: 'pi pi-sign-out',

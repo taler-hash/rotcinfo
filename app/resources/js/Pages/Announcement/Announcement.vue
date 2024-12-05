@@ -1,10 +1,10 @@
 <template>
-    <Head title="Users" />
+    <Head title="Announcements" />
 
     <AuthenticatedLayout>
         <template #header>
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                Users
+                Announcements
             </h2>
         </template>
 

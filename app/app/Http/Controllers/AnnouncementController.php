@@ -2,64 +2,66 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Announcement;
+use App\Http\Requests\CreateAnnouncementRequest;
+use App\Http\Requests\UpdateAnnouncementRequest;
+use App\Services\AnnouncementService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class AnnouncementController extends Controller
 {
+    public $announcementService;
+
+    public function __construct()
+    {
+        $this->announcementService = new AnnouncementService();
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return response()->json($this->announcementService->getAnnouncements($request));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    
+    public function display() {
+        return Inertia::render('Announcement/Announcement');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateAnnouncementRequest $request)
     {
-        //
+       
+        $this->announcementService->storeAnnouncement($request);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Announcement $announcement)
+    public function show(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Announcement $announcement)
-    {
-        //
+        return response()->json($this->announcementService->showAnnouncement($request));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Announcement $announcement)
+    public function update(UpdateAnnouncementRequest $request)
     {
-        //
+        $this->announcementService->updateAnnouncement($request);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Announcement $announcement)
+    public function delete(Request $request)
     {
-        //
+        $this->announcementService->deleteAnnouncement($request);
+    }
+
+    public function count() {
+        return response()->json($this->announcementService->getAnnouncementCount());
     }
 }

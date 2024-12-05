@@ -13,6 +13,9 @@
             </div>
         </template>
         <Column field="header" header="Header" sortable />
+        <Column field="created_at" header="Created" #body="props" sortable>
+            <p>{{ moment(props.data.created_at).format('dddd, Do MMM YYYY') }}</p>
+        </Column>
         <Column style="width: 10%">
             <template #header>
                 <p class="text-center w-full">Actions</p>
@@ -31,7 +34,8 @@
     <UpdateAnnouncementDialog ref="uud" />
 </template>
 <script setup lang="ts">
-import { Column, Badge } from 'primevue';
+import moment from 'moment';
+import { Column } from 'primevue';
 import { DataTable, DataTablePageEvent, DataTableSortEvent, Avatar } from 'primevue';
 import { Button } from 'primevue';
 import SearchInput from '@/Components/SearchInput/SearchInput.vue';

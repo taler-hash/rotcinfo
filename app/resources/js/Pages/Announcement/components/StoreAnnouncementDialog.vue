@@ -1,32 +1,27 @@
 <template>
-    <Dialog v-model:visible="visible" modal :header="`Add S1 Admin`" @hide="close">
+    <Dialog v-model:visible="visible" modal :header="`Create Announcement`" @hide="close">
         <form @submit.prevent="submit" class="space-y-4">
+            <div class="flex flex-col items-center space-y-4">
+                <img v-if="form.image" :src="form.image" alt="Image" class="shadow-md rounded-xl w-64" />
+                <FileUpload mode="basic" @select="onFileSelect" customUpload auto severity="secondary"
+                    choose-label="Choose Image" class="p-button-outlined" />
+                <InputError :message="form.errors.image" />
+            </div>
             <div class="">
                 <FloatLabel variant="in">
-                    <InputText id="username" v-model="form.username" autocomplete="off" required class="w-full" />
-                    <label for="username">Username</label>
+                    <InputText id="header" v-model="form.header" autocomplete="off" required class="w-full" />
+                    <label for="header">Header</label>
                 </FloatLabel>
-                <InputError class="mt-2" :message="form.errors.username" />
+                <InputError class="mt-2" :message="form.errors.header" />
             </div>
-
             <div class="">
-                <div class="flex items-center space-x-2">
-                    <FloatLabel variant="in">
-                        <InputText id="lastname" v-model="form.lastname" autocomplete="off" required class="w-full" />
-                        <label for="lastname">Last name</label>
-                    </FloatLabel>
-                    <FloatLabel variant="in">
-                        <InputText id="firstname" v-model="form.firstname" autocomplete="off" required class="w-full" />
-                        <label for="firstname">First name</label>
-                    </FloatLabel>
-                </div>
-                <InputError class="mt-2" :message="form.errors.name" />
+                <FloatLabel variant="in">
+                    <Textarea id="description" v-model="form.description" autocomplete="off" required class="w-full"
+                        rows="5" cols="30" />
+                    <label for="description">description</label>
+                </FloatLabel>
+                <InputError class="mt-2" :message="form.errors.description" />
             </div>
-            <FloatLabel variant="in">
-                <InputText id="password" v-model="form.password" autocomplete="off" class="w-full" type="password" />
-                <label for="password">Password</label>
-            </FloatLabel>
-            <InputError class="mt-2" :message="form.errors.password" />
             <div class="pt-4">
                 <Button type="submit" severity="success" label="submit" class="w-full" />
             </div>
@@ -35,22 +30,19 @@
 </template>
 <script setup lang="ts">
 import { Button } from 'primevue';
-import { InputText, InputNumber, FileUpload, Select, FloatLabel } from 'primevue';
+import { InputText, Textarea, FileUpload, FloatLabel } from 'primevue';
 import InputError from '../../../Components/InputError.vue'
 import { Dialog } from 'primevue';
 import { inject, ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
-import { UserTypes } from '@/Pages/User/Types/UserTypes'
+import { AnnouncementTypes } from '@/Pages/Announcement/Types/AnnouncementTypes'
 import { useToast } from 'primevue';
 
 const toast = useToast()
-const form = useForm<UserTypes>({
-    firstname: '',
-    lastname: '',
-    name: '',
-    username: '',
-    password: '',
-    position: 's1-admin'
+const form = useForm<AnnouncementTypes>({
+    header: '',
+    description: '',
+    image: null
 })
 
 const reloadTable = inject<any>('reloadTable')
@@ -66,10 +58,21 @@ function close() {
     reloadTable()
 }
 
-async function submit() {
-    form.name = `${form.lastname}, ${form.firstname}`
+function onFileSelect(event: any) {
+    const file = event.files[0];
+    const reader = new FileReader();
 
-    form.post(route('users.store'), {
+    reader.onload = async (e) => {
+        form.image = e.target?.result;
+    };
+
+    reader.readAsDataURL(file);
+}
+
+
+async function submit() {
+
+    form.post(route('announcements.store'), {
         onSuccess: () => {
             toast.add({ severity: 'success', summary: 'Success', detail: `Added S1-Admin Successfully`, life: 3000 });
             close()
