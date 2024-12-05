@@ -8,6 +8,7 @@ class UserService {
     public function getUsers($request) {
         $model = new User();
         return User::with('roles')
+        ->s1Admin()
         ->whereHas('roles', function ($q) use ($request) {
             $q->when($request?->role, function ($q2) use ($request) {
                 $q2->where('name', $request->role);
@@ -36,6 +37,10 @@ class UserService {
     }
 
     public function userCount() {
-        return User::count();
+        return User::with('roles')
+        ->whereHas('roles', function ($q) {
+            $q->whereNotIn('name', ['admin']);
+        })
+        ->count();
     }
 }

@@ -66,4 +66,8 @@ class User extends Authenticatable
         $sanitized = preg_replace('/\s/', '', $name[1], 1);
         return  $sanitized;
     }
+
+    public function scopeS1Admin($q) {
+        return $q->where('name', '!=' ,'admin');
+    }
 }

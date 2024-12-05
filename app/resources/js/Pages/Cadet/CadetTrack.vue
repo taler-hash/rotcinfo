@@ -157,7 +157,6 @@ const visible = ref<boolean>(false)
 function submit() {
     axios.get(route('cadets.show'), { params: filters.value })
         .then((res) => {
-            console.log(res)
             cadet.value = res.data
         })
         .catch((err) => {
