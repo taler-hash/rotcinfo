@@ -22,6 +22,7 @@ class UpdateCadetRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id_number' => ['required', 'integer' ,'unique:cadets,id_number,'.$this->id],
             'name' => ['required', 'unique:cadets,name,'.$this->id],
             'email' => ['required', 'email', 'unique:cadets,email,'.$this->id],
             'gender' => ['required'],
@@ -34,7 +35,8 @@ class UpdateCadetRequest extends FormRequest
             'height' => ['required'],
             'beneficiary' => ['required'],
             'class_year_id' => ['required'],
-            'subject' => ['required']
+            'subject' => ['required'],
+            'status' => ['required'],
         ];
     }
 }

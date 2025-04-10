@@ -4,10 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Casts\DOBCast;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Cadet extends Model
+class Cadet extends Model implements HasMedia
 {
+    use InteractsWithMedia;
+
     protected $fillable = [
+        'id_number',
         'name',
         'cadet_identifier',
         'gender',
@@ -24,12 +29,17 @@ class Cadet extends Model
         'class_year_id',
         'sem_1_grade',
         'sem_2_grade',
-        'status'
+        'status',
+        'password'
     ];
 
     protected $appends = [
         'lastname',
         'firstname'
+    ];
+
+    protected $hidden = [
+        'password',
     ];
 
     protected function casts() {

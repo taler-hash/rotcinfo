@@ -1,9 +1,16 @@
 <template>
     <Dialog v-model:visible="visible" modal :header="`Update Cadet`" @hide="close">
         <form @submit.prevent="submit" class="space-y-4">
+            <div class="flex flex-col gap-2 items-center order-first lg:order-last">
+                <img v-if="form?.image" :src="form.image" class="shadow-md rounded-xl w-64" />
+                <img v-else :src="form.media?.[0].original_url" alt="Image" class="shadow-md rounded-xl w-64" />
+                <FileUpload mode="basic" @select="onFileSelect" customUpload auto severity="secondary" choose-label="Choose Image"
+                    class="p-button-outlined" />
+                <InputError :message="form.errors.image" />
+            </div>
             <div class="">
                 <FloatLabel variant="in">
-                    <Select :options="['active', 'inactive']" v-model="form.status" required class="w-full"/>
+                    <Select :options="['registered', 'enrolled']" v-model="form.status" required class="w-full"/>
                     <label for="status">Status</label>
                 </FloatLabel>
                 <InputError class="mt-2" :message="form.errors.status" />
@@ -84,7 +91,7 @@
             </div>
             <div class="">
                 <FloatLabel variant="in">
-                    <InputText id="course" v-model="form.course" autocomplete="off" required class="w-full" />
+                    <Select :options="courses" v-model="form.course" optionLabel="label" optionValue="value" required class="w-full" />
                     <label for="course">Course</label>
                 </FloatLabel>
                 <InputError class="mt-2" :message="form.errors.course" />
@@ -133,7 +140,7 @@
 <script setup lang="ts">
 import { Button } from 'primevue'
 import LazySelect from '@/Components/Lazyselect/LazySelect.vue';
-import { InputText, FloatLabel, InputNumber, Select, DatePicker } from 'primevue';
+import { InputText, FloatLabel, InputNumber, Select, DatePicker, FileUpload } from 'primevue';
 import InputError from '../../../Components/InputError.vue'
 import { Dialog } from 'primevue';
 import { inject, ref } from 'vue';
@@ -159,7 +166,9 @@ const form = useForm<CadetTypes>({
     height: '',
     beneficiary: '',
     email: '',
-    status: ''
+    status: '',
+    image: undefined,
+    media: undefined
 })
 
 const subjectOptions = ref<string[]>([
@@ -167,6 +176,14 @@ const subjectOptions = ref<string[]>([
     'ms-3',
     'ms-4',
 ])
+const courses = ref<{value: string, label: string}[]>([
+    { value: 'bsit', label: 'Bachelor of Science in Information Technology' },
+    { value: 'bsba', label: 'Bachelor of Science in Business Administration' },
+    { value: 'bspolsci', label: 'Bachelor of Science in Political Science' },
+    { value: 'bshm', label: 'Bachelor of Science in Hospital Management' },
+    { value: 'bsee', label: 'Bachelor of Science in Elementary Education' },
+    { value: 'bsse', label: 'Bachelor of Science in Secondary Education' }
+]);
 const reloadTable = inject<any>('reloadTable')
 const visible = ref<boolean>(false)
 
@@ -195,6 +212,17 @@ async function submit() {
             form.reset()
         }
     })
+}
+
+function onFileSelect(event: any) {
+    const file = event.files[0];
+    const reader = new FileReader();
+
+    reader.onload = async (e) => {
+        form.image = e.target?.result;
+    };
+
+    reader.readAsDataURL(file);
 }
 
 defineExpose({

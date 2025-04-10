@@ -1,8 +1,11 @@
-<?
+<?php
 
 namespace App\Services;
 use App\Models\Announcement;
+use App\Models\Cadet;
 use App\Services\Base64;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AnnouncementService {
 
@@ -46,6 +49,16 @@ class AnnouncementService {
 
     public function getAnnouncementCount() {
         return Announcement::count();
+    }
+
+    public function loginAnnouncement($request) {
+        $cadet = Cadet::where('email', $request->email)->first();
+
+        if (!$cadet || (!Hash::check($request->password, $cadet->password)) || $cadet->status === 'registered') {
+            throw ValidationException::withMessages([
+                'email' => 'Invalid email or password',
+            ]);
+        }
     }
     
 }

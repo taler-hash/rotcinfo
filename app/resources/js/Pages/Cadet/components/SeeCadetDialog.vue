@@ -1,6 +1,10 @@
 <template>
     <Dialog v-model:visible="visible" modal :header="`Cadet`" @hide="close">
-        <form @submit.prevent="submit" class="space-y-4">
+        <form @submit.prevent="submit" class="space-y-4 relative">
+            <div class="absolute w-full h-full z-50"></div>
+            <div class="w-full flex justify-center">
+                <img v-if="form.media?.[0].original_url" :src="form.media?.[0].original_url" alt="" class="shadow-md rounded-xl w-64" />
+            </div>
             <div class="">
                 <FloatLabel variant="in">
                     <InputText id="cadet_identifier" v-model="form.cadet_identifier" autocomplete="off" readonly class="w-full" />
@@ -9,21 +13,21 @@
             </div>
             <div class="">
                 <FloatLabel variant="in">
-                    <Select :options="['active', 'inactive']" v-model="form.status" readonly class="w-full"/>
+                    <Select :options="['registered', 'enrolled']" v-model="form.status" required class="w-full"/>
                     <label for="status">Status</label>
                 </FloatLabel>
                 <InputError class="mt-2" :message="form.errors.status" />
             </div>
             <div class="">
                 <FloatLabel variant="in">
-                    <LazySelect module="classYears" label="cl" v-model="form.class_year_id" :disabled='true' />
+                    <LazySelect module="classYears" label="cl" v-model="form.class_year_id" />
                     <label for="cl">Class Year</label>
                 </FloatLabel>
                 <InputError class="mt-2" :message="form.errors.class_year_id" />
             </div>
             <div class="">
                 <FloatLabel variant="in">
-                    <Select v-model="form.subject" :options="subjectOptions" class="w-full" disabled />
+                    <Select v-model="form.subject" :options="subjectOptions" class="w-full" />
                     <label for="lastname">Subject</label>
                 </FloatLabel>
             </div>
@@ -62,7 +66,7 @@
             </div>
             <div class="">
                 <FloatLabel variant="in">
-                    <Select :options="['male', 'female']" v-model="form.gender" disabled class="w-full" />
+                    <Select :options="['male', 'female']" v-model="form.gender" class="w-full" />
                     <label for="gender">Gender</label>
                 </FloatLabel>
                 <InputError class="mt-2" :message="form.errors.gender" />
@@ -89,7 +93,7 @@
             </div>
             <div class="">
                 <FloatLabel variant="in">
-                    <InputText id="course" v-model="form.course" autocomplete="off" readonly class="w-full" />
+                    <Select :options="courses" v-model="form.course" optionLabel="label" optionValue="value" required class="w-full" />
                     <label for="course">Course</label>
                 </FloatLabel>
                 <InputError class="mt-2" :message="form.errors.course" />
@@ -153,6 +157,15 @@ const visible = ref<boolean>(false)
     'ms-3',
     'ms-4',
 ])
+const courses = ref<{value: string, label: string}[]>([
+    { value: 'bsit', label: 'Bachelor of Science in Information Technology' },
+    { value: 'bsba', label: 'Bachelor of Science in Business Administration' },
+    { value: 'bspolsci', label: 'Bachelor of Science in Political Science' },
+    { value: 'bshm', label: 'Bachelor of Science in Hospital Management' },
+    { value: 'bsee', label: 'Bachelor of Science in Elementary Education' },
+    { value: 'bsse', label: 'Bachelor of Science in Secondary Education' }
+]);
+
 function open(props: CadetTypes) {
     form.defaults(props)
     form.defaults({

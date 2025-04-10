@@ -74,7 +74,6 @@ Route::middleware('auth')->group(function () {
         //Announcement
         Route::controller(AnnouncementController::class)
         ->prefix('/announcements')
-        ->middleware(['role:s1-admin'])
         ->name('announcements.')
         ->group(function() {
             Route::get('/', 'display')->name('display');
@@ -85,6 +84,14 @@ Route::middleware('auth')->group(function () {
             Route::put('/update', 'update')->name('update');
             Route::delete('/delete', 'delete')->name('delete');
             Route::delete('/count', 'count')->name('count');
+        });
+
+        //Cadets
+        Route::controller(CadetController::class)
+        ->prefix('/cadets/auth')
+        ->name('cadets.auth.')
+        ->group(function() {
+            Route::post('/store', 'store')->name('store');
         });
 });
 
@@ -105,6 +112,12 @@ Route::controller(CadetController::class)
     Route::get('/track', 'track')->name('track');
     Route::get('/show', 'show')->name('show');
 });
+
 Route::get('/announcements/public', [AnnouncementController::class, 'index'])->name('announcements.public.index');
+Route::post('/announcements/public/login', [AnnouncementController::class, 'login'])->name('announcements.public.login');
+
+Route::get('/regmail', function () {
+    return view('Mail.SuccessEnrolledCadetMail');
+})->name('cadets.regmail');
 
 require __DIR__.'/auth.php';

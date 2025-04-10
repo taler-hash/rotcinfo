@@ -3,6 +3,19 @@
         <div v-if="!completed" class="">
             <div class="mb-4 font-black text-2xl">Cadet Registration Form</div>
             <form @submit.prevent="submit" class="space-y-4">
+                <div class="flex flex-col items-center gap-2 order-first lg:order-last">
+                    <img v-if="form.image" :src="form.image" alt="" class="shadow-md rounded-xl w-64" />
+                    <FileUpload mode="basic" @select="onFileSelect" customUpload auto severity="secondary" choose-label="Choose Image"
+                        class="p-button-outlined" />
+                    <InputError :message="form.errors.image" />
+                </div>
+                <div class="">
+                    <FloatLabel variant="in">
+                        <InputNumber v-model="form.id_number" inputId="in_label" class="w-full" required :useGrouping="false"/>
+                        <label for="in_label">Id Number</label>
+                    </FloatLabel>
+                    <InputError class="mt-2" :message="form.errors.id_number" />
+                </div>
                 <div class="">
                     <div class="flex items-center space-x-2">
                         <FloatLabel variant="in">
@@ -27,7 +40,7 @@
                 </div>
                 <div class="">
                     <FloatLabel variant="in">
-                        <InputNumber v-model="form.age" inputId="in_label" class="w-full" required />
+                        <InputNumber v-model="form.age" inputId="in_label" class="w-full" required :useGrouping="false"/>
                         <label for="in_label">Age</label>
                     </FloatLabel>
                     <InputError class="mt-2" :message="form.errors.age" />
@@ -48,7 +61,7 @@
                 </div>
                 <div class="">
                     <FloatLabel variant="in">
-                        <InputText id="course" v-model="form.course" autocomplete="off" required class="w-full" />
+                        <Select :options="courses" v-model="form.course" optionLabel="label" optionValue="value" required class="w-full" />
                         <label for="course">Course</label>
                     </FloatLabel>
                     <InputError class="mt-2" :message="form.errors.course" />
@@ -89,6 +102,19 @@
                     </FloatLabel>
                     <InputError class="mt-2" :message="form.errors.email" />
                 </div>
+                <div class="w-full">
+                    <FloatLabel variant="in" class="w-full">
+                        <Password id="password" v-model="form.password" autocomplete="off" required :feedback="true" toggleMask :pt="{
+                            InputText: 'grow',
+                            root: {
+                                class: 'w-full'
+                            }
+                            
+                        }"/>
+                        <label for="password">Password</label>
+                    </FloatLabel>
+                    <InputError class="mt-2" :message="form.errors.password" />
+                </div>
                 <div class="pt-4">
                     <Button type="submit" severity="success" label="submit" class="w-full" />
                 </div>
@@ -105,10 +131,8 @@
 <script setup lang="ts">
 import InputError from '@/Components/InputError.vue';
 import RegisterLayout from '@/Layouts/RegisterLayout.vue';
-import { Button } from 'primevue';
-import { InputText, Select, FloatLabel, InputNumber, DatePicker } from 'primevue';
+import { InputText, Select, FloatLabel, InputNumber, DatePicker, FileUpload, Button, Password, useToast } from 'primevue';
 import { CadetTypes } from '@/Pages/Cadet/Types/CadetTypes'
-import { useToast } from 'primevue';
 import { router, useForm, usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import axios from 'axios';
@@ -116,12 +140,20 @@ import axios from 'axios';
 interface CadetWithRouteTypes extends CadetTypes {
     route?: string
 }
-
+const courses = ref<{value: string, label: string}[]>([
+    { value: 'bsit', label: 'Bachelor of Science in Information Technology' },
+    { value: 'bsba', label: 'Bachelor of Science in Business Administration' },
+    { value: 'bspolsci', label: 'Bachelor of Science in Political Science' },
+    { value: 'bshm', label: 'Bachelor of Science in Hospital Management' },
+    { value: 'bsee', label: 'Bachelor of Science in Elementary Education' },
+    { value: 'bsse', label: 'Bachelor of Science in Secondary Education' }
+]);
 const completed = ref<boolean>(false)
 const cadet = ref<CadetTypes>({})
 const page = usePage();
 const toast = useToast()
 const form = useForm<CadetWithRouteTypes>({
+    id_number: undefined,
     class_year_id: page.props.class_year_id as number,
     subject: 'ms-',
     firstname: '',
@@ -137,8 +169,21 @@ const form = useForm<CadetWithRouteTypes>({
     height: '',
     beneficiary: '',
     email: '',
-    route: 'register'
+    route: 'register',
+    password: '',
+    image: undefined,
 })
+
+function onFileSelect(event: any) {
+    const file = event.files[0];
+    const reader = new FileReader();
+
+    reader.onload = async (e) => {
+        form.image = e.target?.result;
+    };
+
+    reader.readAsDataURL(file);
+}
 
 async function submit() {
     form.name = `${form.lastname}, ${form.firstname}`

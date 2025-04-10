@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AnnouncementLoginRequest;
 use App\Http\Requests\CreateAnnouncementRequest;
 use App\Http\Requests\UpdateAnnouncementRequest;
 use App\Services\AnnouncementService;
@@ -63,5 +64,9 @@ class AnnouncementController extends Controller
 
     public function count() {
         return response()->json($this->announcementService->getAnnouncementCount());
+    }
+
+    public function login(AnnouncementLoginRequest $request) {
+        return $this->announcementService->loginAnnouncement($request);
     }
 }

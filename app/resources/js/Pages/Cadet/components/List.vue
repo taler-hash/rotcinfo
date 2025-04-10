@@ -16,6 +16,11 @@
                 </div>
             </div>
         </template>
+        <Column header="Image">
+            <template #body="props">
+                <Avatar :image="props.data.media[0].original_url" class="mr-2" size="xlarge" shape="circle" />
+            </template>
+        </Column>
         <Column field="name" header="Name" sortable />
         <Column field="course" header="Course" sortable />
         <Column field="age" header="Age" sortable />
@@ -49,7 +54,7 @@
 </template>
 <script setup lang="ts">
 import { Column} from 'primevue';
-import { DataTable, DataTablePageEvent, DataTableSortEvent, Badge } from 'primevue';
+import { DataTable, DataTablePageEvent, DataTableSortEvent, Badge, Avatar } from 'primevue';
 import { Button } from 'primevue';
 import SearchInput from '@/Components/SearchInput/SearchInput.vue';
 import SeeCadetDialog from '@/Pages/Cadet/components/SeeCadetDialog.vue';
@@ -166,7 +171,19 @@ function submitCloseRegistration() {
 }
 
 function statusSeverity(status: string) {
-    return status === 'active' ? 'success' : 'danger';
+    let statusColor = {
+        'registered': 'warn',
+        'enrolled': 'success',
+        'notenrolled': 'danger',
+    }
+
+    if(status === 'registered') {
+        return statusColor['registered']
+    } else if (status === 'enrolled') {
+        return statusColor['enrolled']
+    } else if (status === 'notenrolled') {
+        return statusColor['notenrolled']
+    }
 }
 
 provide('reloadTable', reloadTable)

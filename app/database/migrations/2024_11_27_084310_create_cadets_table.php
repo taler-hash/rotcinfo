@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('cadets', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('id_number')->unique();
             $table->string('name');
             $table->string('cadet_identifier')->nullable();
             $table->enum('gender', ['male', 'female']);
@@ -30,6 +31,7 @@ return new class extends Migration
             $table->float('sem_1_grade')->nullable();
             $table->float('sem_2_grade')->nullable();
             $table->string('status');
+            $table->string('password');
             $table->timestamps();
         });
     }

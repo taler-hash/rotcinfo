@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Mail\SuccessEnrolledCadetMail;
 use App\Models\Cadet;
 use App\Models\ClassYear;
 use Carbon\Carbon;
@@ -10,12 +11,15 @@ use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SuccessRegisteredCadetMail;
+use Illuminate\Support\Facades\Hash;
 
 class CadetService {
 
     public function getCadets($request) {
         $model = new Cadet();
-        return Cadet::with('classyear')
+        return Cadet::with(['media', 'classyear'])
         ->when($request?->class_year_id, function($q) use($request) {
             $q->where('class_year_id', $request->class_year_id);
         })
@@ -41,14 +45,17 @@ class CadetService {
 
     public function storeCadet($request) {
         $fields = $request->all();
-        $fields['status'] = 'active';
+        $fields['status'] = 'registered';
+        $fields['password'] = Hash::make($request->password);
         $fields['cadet_identifier'] = $request->lastname[0].$request->firstname[0]."-".Str::random(5);
         
         if($request?->route === 'register' && !Cache::get('open')) {
             return response()->json(['closed' => true], 410);
         }
         
-        $cadet = Cadet::create($fields);
+        Mail::to($request->email)->send(new SuccessRegisteredCadetMail($request->except('image')));
+        $cadet = Cadet::create(collect($fields)->except(['image'])->toArray());
+        $cadet->addMedia(Base64::convertToUploadedFile($request->image, $request->name))->toMediaCollection('cadets');
 
         if($request?->route === 'register') {
             return response()->json($cadet);
@@ -56,7 +63,19 @@ class CadetService {
     }
 
     public function updateCadet($request) {
-        Cadet::find($request->id)->update($request->all());
+        $cadet = Cadet::find($request->id);
+        $cadet->status = $request->status;
+
+        if ($cadet->isDirty('status') && $request->status === 'enrolled') {
+            Mail::to($request->email)->send(new SuccessEnrolledCadetMail($request));
+        }
+
+        $cadet->update($request->except(['image', 'media', 'created_at', 'updated_at']));
+
+        if (!empty($request->image)) {
+            $cadet->clearMediaCollection('cadets');
+            $cadet->addMedia(Base64::convertToUploadedFile($request->image, $request->name))->toMediaCollection('cadets');
+        }
     }
     
 

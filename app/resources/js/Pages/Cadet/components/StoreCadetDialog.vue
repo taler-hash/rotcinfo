@@ -1,6 +1,19 @@
 <template>
     <Dialog v-model:visible="visible" modal :header="`Add Cadet`" @hide="close">
         <form @submit.prevent="submit" class="space-y-4">
+            <div class="flex flex-col gap-2 order-first lg:order-last items-center">
+                <img v-if="form.image" :src="form.image" alt="" class="shadow-md rounded-xl w-64" />
+                <FileUpload mode="basic" @select="onFileSelect" customUpload auto severity="secondary" choose-label="Choose Image"
+                    class="p-button-outlined" />
+                <InputError :message="form.errors.image" />
+            </div>
+            <div class="">
+                <FloatLabel variant="in">
+                    <InputNumber v-model="form.id_number" inputId="in_label" class="w-full" required :useGrouping="false"/>
+                    <label for="in_label">Id Number</label>
+                </FloatLabel>
+                <InputError class="mt-2" :message="form.errors.id_number" />
+            </div>
             <div class="">
                 <FloatLabel variant="in">
                     <LazySelect module="classYears" label="cl" v-model="form.class_year_id" />
@@ -57,7 +70,7 @@
             </div>
             <div class="">
                 <FloatLabel variant="in">
-                    <InputText id="course" v-model="form.course" autocomplete="off" required class="w-full" />
+                    <Select :options="courses" v-model="form.course" optionLabel="label" optionValue="value" required class="w-full" />
                     <label for="course">Course</label>
                 </FloatLabel>
                 <InputError class="mt-2" :message="form.errors.course" />
@@ -97,6 +110,19 @@
                 </FloatLabel>
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
+            <div class="w-full">
+                <FloatLabel variant="in" class="w-full">
+                    <Password id="password" v-model="form.password" autocomplete="off" required :feedback="true" toggleMask :pt="{
+                        InputText: 'grow',
+                        root: {
+                            class: 'w-full'
+                        }
+                        
+                    }"/>
+                    <label for="password">Password</label>
+                </FloatLabel>
+                <InputError class="mt-2" :message="form.errors.password" />
+            </div>
             <div class="pt-4">
                 <Button type="submit" severity="success" label="submit" class="w-full" />
             </div>
@@ -106,7 +132,7 @@
 <script setup lang="ts">
 import { Button } from 'primevue';
 import LazySelect from '@/Components/Lazyselect/LazySelect.vue';
-import { InputText, Select, FloatLabel, InputNumber, DatePicker } from 'primevue';
+import { InputText, Select, FloatLabel, InputNumber, DatePicker, FileUpload, Password } from 'primevue';
 import InputError from '../../../Components/InputError.vue'
 import { Dialog } from 'primevue';
 import { inject, ref } from 'vue';
@@ -117,6 +143,7 @@ import axios from 'axios';
 
 const toast = useToast()
 const form = useForm<CadetTypes>({
+    id_number: undefined,
     firstname: '',
     lastname: '',
     name: '',
@@ -131,8 +158,20 @@ const form = useForm<CadetTypes>({
     beneficiary: '',
     class_year_id: undefined,
     email: '',
-    subject: ''
+    subject: '',
+    image: undefined,
+    status: 'registered',
+    password: ''
 })
+
+const courses = ref<{value: string, label: string}[]>([
+    { value: 'bsit', label: 'Bachelor of Science in Information Technology' },
+    { value: 'bsba', label: 'Bachelor of Science in Business Administration' },
+    { value: 'bspolsci', label: 'Bachelor of Science in Political Science' },
+    { value: 'bshm', label: 'Bachelor of Science in Hospital Management' },
+    { value: 'bsee', label: 'Bachelor of Science in Elementary Education' },
+    { value: 'bsse', label: 'Bachelor of Science in Secondary Education' }
+]);
 const subjectOptions = ref<string[]>([
     'ms-',
     'ms-3',
@@ -148,6 +187,7 @@ function open() {
 function close() {
     visible.value = false
     form.reset()
+    form.clearErrors()
     reloadTable()
 }
 
@@ -159,12 +199,24 @@ async function submit() {
             toast.add({ severity: 'success', summary: 'Success', detail: `Added Cadet Successfully`, life: 3000 });
             close()
             form.reset()
-        }
+        },
+
     })
 }
 
 async function clOptions() {
     const res = await axios.get('')
+}
+
+function onFileSelect(event: any) {
+    const file = event.files[0];
+    const reader = new FileReader();
+
+    reader.onload = async (e) => {
+        form.image = e.target?.result;
+    };
+
+    reader.readAsDataURL(file);
 }
 
 defineExpose({

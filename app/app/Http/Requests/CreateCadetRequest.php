@@ -22,10 +22,11 @@ class CreateCadetRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id_number' => ['required', 'integer' ,'unique:cadets,id_number'],
             'name' => ['required', 'unique:cadets,name'],
             'email' => ['required', 'email', 'unique:cadets,email'],
             'gender' => ['required'],
-            'age' => ['integer'],
+            'age' => ['integer', 'min:15'],
             'dob' => ['required'],
             'address' => ['required'],
             'course' => ['required'],
@@ -34,7 +35,9 @@ class CreateCadetRequest extends FormRequest
             'height' => ['required'],
             'beneficiary' => ['required'],
             'class_year_id' => ['required'],
-            'subject' => ['required']
+            'subject' => ['required'],
+            'password' => ['required'],
+            'image' => ['required']
         ];
     }
 }

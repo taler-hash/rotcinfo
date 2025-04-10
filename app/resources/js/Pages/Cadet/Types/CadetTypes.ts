@@ -1,4 +1,5 @@
 export interface CadetTypes {
+    id_number?: number,
     firstname?: string,
     lastname?: string,
     name?: string,
@@ -17,7 +18,12 @@ export interface CadetTypes {
     sem_2_grade?: number,
     class_year_id?: number,
     subject?: string,
-    status?: string
+    status?: string,
+    password?: string,
+    image?: any,
+    media?: {
+        original_url?: string
+    }[]
 }
 
 export interface PaginationTypes {
