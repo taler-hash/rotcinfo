@@ -222,16 +222,14 @@
                             <div class="f-normal" style="margin-bottom: 50px">
                                 Prepared By:
                             </div>
-                            <div class="f-normal">{{ ucfirst($admin_nco) }}</div>
-                            <div class="f-normal">{{ $admin_nco_rank}}</div>
+                            <div class="f-normal">{{ $admin_nco_rank}} {{ ucfirst($admin_nco) }}</div>
                             <div class="f-normal">Admin NCO</div>
                         </th>
                         <th style="font-weight: normal; text-align:left; width:30%;">
                             <div style="margin-bottom: 50px">
                                 CERTIFIED CORRECT:
                             </div>
-                            <div class="f-bold">{{ strtoupper($commandant)}}</div>
-                            <div class="f-normal">{{ strtoupper($commandant_rank)}}</div>
+                            <div class="f-bold">{{ strtoupper($commandant_rank)}} {{ strtoupper($commandant)}}</div>
                             <div class="f-normal">Commandant</div>
                         </th>
                     </tr>

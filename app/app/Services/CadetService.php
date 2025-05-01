@@ -14,6 +14,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SuccessRegisteredCadetMail;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+
 
 class CadetService {
 
@@ -30,12 +32,12 @@ class CadetService {
 
     public function showCadet($request) {
         
-        if(!empty($request?->cadet_identifier)) {
-            $cadet = Cadet::where('cadet_identifier', $request->cadet_identifier)->first();
+        if(!empty($request?->for_info)) {
+            $cadet = User::find(auth()->user()->id)->cadet;
 
             if(!$cadet) {
                 return response()->json([], 404);
-            } 
+            }
 
             return response()->json($cadet);
         }
@@ -57,6 +59,18 @@ class CadetService {
         $cadet = Cadet::create(collect($fields)->except(['image'])->toArray());
         $cadet->addMedia(Base64::convertToUploadedFile($request->image, $request->name))->toMediaCollection('cadets');
 
+        $cadet->refresh();
+
+        $user = User::create([
+            'username' => $cadet->id_number,
+            'name' => $cadet->name,
+            'position' => 'cadet',
+            'password' => $fields['password'],
+            'status' => 'inactive'
+        ]);
+
+        $user->assignRole('cadet');
+
         if($request?->route === 'register') {
             return response()->json($cadet);
         }
@@ -66,8 +80,14 @@ class CadetService {
         $cadet = Cadet::find($request->id);
         $cadet->status = $request->status;
 
-        if ($cadet->isDirty('status') && $request->status === 'enrolled') {
-            Mail::to($request->email)->send(new SuccessEnrolledCadetMail($request));
+        if ($cadet->isDirty('status')) {
+            if($request->status === 'enrolled') {
+                Mail::to($request->email)->send(new SuccessEnrolledCadetMail($request));
+                User::firstWhere('username', $cadet->id_number)->update(['status' => 'active']);
+            } else {
+                User::firstWhere('username', $cadet->id_number)->update(['status' => 'inactive']);
+            }
+            
         }
 
         $cadet->update($request->except(['image', 'media', 'created_at', 'updated_at']));

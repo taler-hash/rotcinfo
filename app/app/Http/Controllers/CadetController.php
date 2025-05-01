@@ -92,9 +92,6 @@ class CadetController extends Controller
         return $this->cadetService->generateReport($request);
     }
 
-    public function validateReport(GenerateReportRequest $request) {
-    }
-
     public function track(Request $request) {
         return Inertia::render('Cadet/CadetTrack');
     }

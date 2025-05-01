@@ -69,4 +69,11 @@ class AnnouncementController extends Controller
     public function login(AnnouncementLoginRequest $request) {
         return $this->announcementService->loginAnnouncement($request);
     }
+
+    /**
+     * For all
+     */
+    public function displayAnnouncementPublic() {
+        return Inertia::render('Announcement/ShowAnnouncement');
+    }
 }

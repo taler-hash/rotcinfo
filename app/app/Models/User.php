@@ -3,10 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\Cadet;
 
 class User extends Authenticatable
 {
@@ -28,6 +30,7 @@ class User extends Authenticatable
         'name',
         'username',
         'position',
+        'status',
         'password',
     ];
 
@@ -69,5 +72,9 @@ class User extends Authenticatable
 
     public function scopeS1Admin($q) {
         return $q->where('name', '!=' ,'admin');
+    }
+
+    public function cadet() {
+        return $this->hasOne(Cadet::class, 'id_number', 'username');
     }
 }

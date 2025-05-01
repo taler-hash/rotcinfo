@@ -38,6 +38,8 @@ const page = usePage()
 const cards = ref<any>([])
 
 onMounted(async () => {
+    // tiwasa pag cadet himua announcement ang dashboard 
+    console.log(page.props)
     let _cards: any = []
 
     if(page.props.auth.user.roles.some((role: any) => role.name === 'admin')) {

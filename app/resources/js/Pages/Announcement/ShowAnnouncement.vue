@@ -1,7 +1,5 @@
 <template>
-    <List v-if="isLoggedIn" />
-    <Login v-else />
-    <Toast />
+    <List />
 </template>
 <script lang="ts" setup>
 import { ref,computed, provide  } from 'vue';

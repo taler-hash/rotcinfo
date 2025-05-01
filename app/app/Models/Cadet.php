@@ -70,7 +70,7 @@ class Cadet extends Model implements HasMedia
     }
 
     public function scopeActive($q) {
-        return $q->where('status', 'active');
+        return $q->where('status', 'enrolled');
     }
 
     public function scopeInactive($q) {

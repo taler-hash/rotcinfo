@@ -121,10 +121,11 @@
             </form>
         </div>
         <div v-else class="space-y-2">
-            <div class="text-center font-bold text-2xl">Cadet Identifier</div>
-            <div class="text-center font-bold text-4xl">{{ cadet.cadet_identifier }}</div>
-            <div class="text-gray-500 italic text-center ">Remember this identifier this will serve as your tracker in your information.</div>
-            <div class="text-center font-semibold text-2xl pt-4">You're part of the ROTC now goodluck and have fun!</div>
+            <div class="text-center font-bold text-2xl">Welcome to ROTC</div>
+            <div class="text-center mt-4">
+                <p class="text-lg">Hang tight! 🚀 We're sending an email to confirm your enrollment. Get ready for an exciting ROTC journey!</p>
+                <p class="text-sm text-gray-500 mt-2">This might take a few moments. Thank you for your patience!</p>
+            </div>
         </div>
     </RegisterLayout>
 </template>

@@ -12,12 +12,12 @@ use App\Models\ClassYear;
 use Illuminate\Support\Facades\Cache;
 
 Route::get('/', function () {
-    return Inertia::render('Announcement/ShowAnnouncement');
+    return Inertia::render('Auth/Login');
 });
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified', 'role:admin|s1-admin'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/report', 'report')->name('cadets.report');
             Route::post('/report', 'validateReport')->name('cadets.report.validate');
             Route::get('/count', 'count')->name('cadets.count');
+            Route::get('/info', 'track')->name('cadets.info')->withoutMiddleware(['role:s1-admin'])->middleware(['role:cadet']);
         });
 
         //ClassYear
@@ -76,6 +77,11 @@ Route::middleware('auth')->group(function () {
         ->prefix('/announcements')
         ->name('announcements.')
         ->group(function() {
+            Route::prefix('/public')
+            ->name('public.')
+            ->group(function() {
+                Route::get('/', 'displayAnnouncementPublic')->name('display');
+            });
             Route::get('/', 'display')->name('display');
             Route::get('/index', 'index')->name('index');
             Route::get('/show', 'show')->name('show');
@@ -112,9 +118,6 @@ Route::controller(CadetController::class)
     Route::get('/track', 'track')->name('track');
     Route::get('/show', 'show')->name('show');
 });
-
-Route::get('/announcements/public', [AnnouncementController::class, 'index'])->name('announcements.public.index');
-Route::post('/announcements/public/login', [AnnouncementController::class, 'login'])->name('announcements.public.login');
 
 Route::get('/regmail', function () {
     return view('Mail.SuccessEnrolledCadetMail');

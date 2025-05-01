@@ -55,7 +55,7 @@ const items = ref<{ label: string, icon: string, route?: any, canSee: boolean, m
         icon: 'pi pi-user',
         route: route('users.display'),
         method: 'get',
-        canSee: page.props.auth.user.roles.some((v: any) => v.name === 'admin')
+        canSee: true
     },
     {
         label: 'Cadets',
@@ -79,6 +79,20 @@ const items = ref<{ label: string, icon: string, route?: any, canSee: boolean, m
         canSee: true
     },
     {
+        label: 'Public Announcements',
+        icon: 'pi pi-megaphone',
+        route: route('announcements.public.display'),
+        method: 'get',
+        canSee: true
+    },
+    {
+        label: 'Cadet Info',
+        icon: 'pi pi-info-circle',
+        route: route('cadets.info'),
+        method: 'get',
+        canSee: true
+    },
+    {
         label: 'Log out',
         icon: 'pi pi-sign-out',
         route: route('logout'),
@@ -89,13 +103,24 @@ const items = ref<{ label: string, icon: string, route?: any, canSee: boolean, m
 
 
 onMounted(() => {
-    items.value = page.props.auth.user.roles.some((v: any) => v.name === 'admin') ? 
-        items.value.filter((item) => {
-            return !['Cadets', 'Class Years', 'Announcements'].includes(item.label)
-        }) : 
-        items.value.filter((item) => { 
-            return item.label !== 'Users'
+    if(page.props.auth.user.roles.some((v: any) => v.name === 'admin')) {
+        items.value = items.value.filter((item) => {
+            return !['Cadets', 'Class Years', 'Announcements', 'Public Announcements', 'Cadet Info'].includes(item.label)
         })
+    }
+
+    if(page.props.auth.user.roles.some((v: any) => v.name === 's1-admin')) {
+        items.value = items.value.filter((item) => { 
+            return ['Cadets', 'Class Years', 'Announcements', 'Log out', 'Dashboard'].includes(item.label)
+        })
+    }
+
+    if(page.props.auth.user.roles.some((v: any) => v.name === 'cadet')) {
+        items.value = items.value.filter((item) => {
+            return ['Log out', 'Public Announcements', 'Cadet Info'].includes(item.label)
+        })
+    }
+    
 })
 function visit(route: 'string', method: 'get' | 'post') {
     router[method](route);
