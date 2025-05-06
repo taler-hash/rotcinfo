@@ -9,10 +9,10 @@
                     <LazySelect module="classYears" v-model="filters.class_year_id" label="cl" @callback="reloadTable" placeholder="Select Class Year" />
                 </div>
                 <div class="flex items-center space-x-2">
-                    <Button outlined icon="pi pi-ban" severity="warn" @click="handleCloseRegistration()" />
-                    <Button outlined icon="pi pi-link" severity="info" @click="$refs.ord?.open()" />
-                    <Button outlined icon="pi pi-print" severity="success" @click="$refs.grd?.open()" />
-                    <Button outlined icon="pi pi-plus" severity="success" @click="$refs.scd?.open()" />
+                    <Button outlined icon="bi bi-ban" severity="warn" @click="handleCloseRegistration()" />
+                    <Button outlined icon="bi bi-link" severity="info" @click="$refs.ord?.open()" />
+                    <Button outlined icon="bi bi-printer" severity="success" @click="$refs.grd?.open()" />
+                    <Button outlined icon="bi bi-plus" severity="success" @click="$refs.scd?.open()" />
                 </div>
             </div>
         </template>
@@ -39,9 +39,9 @@
             </template>
             <template #body="props">
                 <div class="flex flex-nowrap justify-center">
-                    <Button severity="info" icon="pi pi-eye" text @click="$refs.secd?.open(props.data)" />
-                    <Button severity="warn" icon="pi pi-pencil" text @click="$refs.ucd?.open(props.data)" />
-                    <Button severity="danger" icon="pi pi-times" text @click="handleDeleteCadet(props.data.id)" />
+                    <Button severity="info" icon="bi bi-eye" text @click="$refs.secd?.open(props.data)" />
+                    <Button severity="warn" icon="bi bi-pencil" text @click="$refs.ucd?.open(props.data)" />
+                    <Button severity="danger" icon="bi bi-x" text @click="handleDeleteCadet(props.data.id)" />
                 </div>
             </template>
         </Column>
@@ -118,7 +118,7 @@ function handleDeleteCadet(id: number) {
     confirm.require({
         message: `Are you sure you want to delete this Cadet`,
         header: 'Confirmation',
-        icon: 'pi pi-info-circle',
+        icon: 'bi bi-info-circle',
         accept: () => {
             submitDeleteCadet(id)
         }
@@ -140,7 +140,7 @@ function handleOpenRegistration() {
     confirm.require({
         message: `Are you sure you want to open registration`,
         header: 'Confirmation',
-        icon: 'pi pi-info-circle',
+        icon: 'bi bi-info-circle',
         accept: () => {
             submitOpenRegistration()
         }
@@ -157,7 +157,7 @@ function handleCloseRegistration() {
     confirm.require({
         message: `Are you sure you want to close registration`,
         header: 'Confirmation',
-        icon: 'pi pi-info-circle',
+        icon: 'bi bi-info-circle',
         accept: () => {
             submitCloseRegistration()
         }

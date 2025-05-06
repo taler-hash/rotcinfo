@@ -8,7 +8,7 @@
                     <SearchInput v-model="filters.searchString" @callback="reloadTable()" />
                 </div>
                 <div class="flex items-center-space-x-2">
-                    <Button outlined icon="pi pi-plus" severity="success" @click="$refs.sud?.open()" />
+                    <Button outlined icon="bi bi-plus" severity="success" @click="$refs.sud?.open()" />
                 </div>
             </div>
         </template>
@@ -21,8 +21,8 @@
             </template>
             <template #body="props">
                 <div class="flex flex-nowrap justify-center">
-                    <Button severity="warn" icon="pi pi-pencil" text @click="$refs.uud?.open(props.data)" />
-                    <Button severity="danger" icon="pi pi-times" text @click="handleDeleteClassYear(props.data.id)" />
+                    <Button severity="warn" icon="bi bi-pencil" text @click="$refs.uud?.open(props.data)" />
+                    <Button severity="danger" icon="bi bi-x" text @click="handleDeleteClassYear(props.data.id)" />
                 </div>
             </template>
         </Column>
@@ -91,7 +91,7 @@ function handleDeleteClassYear(id: number) {
     confirm.require({
         message: `Are you sure you want to delete this ClassYear`,
         header: 'Confirmation',
-        icon: 'pi pi-info-circle',
+        icon: 'bi bi-info-circle',
         accept: () => {
             submitDeleteClassYear(id)
         }

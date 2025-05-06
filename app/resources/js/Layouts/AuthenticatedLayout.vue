@@ -45,56 +45,56 @@ const page = usePage<any>();
 const items = ref<{ label: string, icon: string, route?: any, canSee: boolean, method: 'get' | 'post' }[]>([
     {
         label: 'Dashboard',
-        icon: 'pi pi-chart-bar',
+        icon: 'bi bi-file-bar-graph',
         route: route('dashboard'),
         method: 'get',
         canSee: true
     },
     {
         label: 'Users',
-        icon: 'pi pi-user',
+        icon: 'bi bi-person',
         route: route('users.display'),
         method: 'get',
         canSee: true
     },
     {
         label: 'Cadets',
-        icon: 'pi pi-users',
+        icon: 'bi bi-people',
         route: route('cadets.display'),
         method: 'get',
         canSee: true
     },
     {
         label: 'Class Years',
-        icon: 'pi pi-flag',
+        icon: 'bi bi-flag',
         route: route('classYears.display'),
         method: 'get',
         canSee: true
     },
     {
         label: 'Announcements',
-        icon: 'pi pi-info',
+        icon: 'bi bi-info-circle',
         route: route('announcements.display'),
         method: 'get',
         canSee: true
     },
     {
         label: 'Public Announcements',
-        icon: 'pi pi-megaphone',
+        icon: 'bi bi-megaphone',
         route: route('announcements.public.display'),
         method: 'get',
         canSee: true
     },
     {
         label: 'Cadet Info',
-        icon: 'pi pi-info-circle',
+        icon: 'bi info-circle',
         route: route('cadets.info'),
         method: 'get',
         canSee: true
     },
     {
         label: 'Log out',
-        icon: 'pi pi-sign-out',
+        icon: 'bi bi-box-arrow-right',
         route: route('logout'),
         method: 'post',
         canSee: true

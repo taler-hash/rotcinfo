@@ -1,7 +1,7 @@
 <template>
     <IconField iconPosition="left">
         <InputIcon>
-            <i class="pi pi-search" />
+            <i class="bi bi-search" />
         </InputIcon>
         <InputText v-model="model" placeholder="Search" @input="handleSearch" class="w-full"/>
     </IconField>

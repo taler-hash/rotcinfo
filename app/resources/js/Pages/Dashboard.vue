@@ -46,18 +46,18 @@ onMounted(async () => {
         _cards = [{
             label: 'S1 Admin',
             count: getCount('users', true),
-            icon: 'pi pi-users'
+            icon: 'bi bi-people'
         }]
     } else {
         _cards = [{
             label: 'Class Years',
             count: await getCount('classYears', false),
-            icon: 'pi pi-flag'
+            icon: 'bi bi-flag'
         },
         {
             label: 'Cadets',
             count: await getCount('cadets', false),
-            icon: 'pi pi-users'
+            icon: 'bi bi-people-fill'
         }]
     }
 

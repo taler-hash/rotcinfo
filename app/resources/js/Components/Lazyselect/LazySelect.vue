@@ -29,7 +29,7 @@
         </template>
         <template #clearicon="event">
             <div class="grid place-items-center" @click="clear">
-                <i class="pi pi-times"></i>
+                <i class="bi bi-x"></i>
             </div>
         </template>
     </Select>

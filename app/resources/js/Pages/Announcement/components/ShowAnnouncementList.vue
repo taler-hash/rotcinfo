@@ -58,7 +58,7 @@ const toast = useToast();
 const items = ref<{ label: string; icon: string }[]>([
     {
         label: "Log out",
-        icon: "pi pi-sign-out",
+        icon: "bi bi-box-arrow-right",
     },
 ]);
 
