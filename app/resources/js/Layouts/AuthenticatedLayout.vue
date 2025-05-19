@@ -13,10 +13,12 @@
             </header>
 
             <!-- Page Content -->
-            <main>
+            <main class="w-full h-[calc(100%-10.5rem)] overfow-y-hidden">
                 <Toast />
                 <ConfirmDialog />
-                <slot />
+                <div class="h-full overflow-y-auto">
+                    <slot />
+                </div>
             </main>
             <Dock :model="items" :pt="{
                 itemContent: 'bg-[#b39c4d] rounded-lg border border-gray-500 p-1'
@@ -87,7 +89,7 @@ const items = ref<{ label: string, icon: string, route?: any, canSee: boolean, m
     },
     {
         label: 'Cadet Info',
-        icon: 'bi info-circle',
+        icon: 'bi bi-info-circle',
         route: route('cadets.info'),
         method: 'get',
         canSee: true

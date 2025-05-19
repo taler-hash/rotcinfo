@@ -10,6 +10,12 @@
             </div>
             <div class="">
                 <FloatLabel variant="in">
+                    <InputNumber disabled v-model="form.id_number" inputId="in_label" class="w-full" required :useGrouping="false"/>
+                    <label for="id_number">Id Number</label>
+                </FloatLabel>
+            </div>
+            <div class="">
+                <FloatLabel variant="in">
                     <Select :options="['registered', 'enrolled']" v-model="form.status" required class="w-full"/>
                     <label for="status">Status</label>
                 </FloatLabel>

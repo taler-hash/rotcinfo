@@ -7,8 +7,8 @@
             </div>
             <div class="">
                 <FloatLabel variant="in">
-                    <InputText id="cadet_identifier" v-model="form.cadet_identifier" autocomplete="off" readonly class="w-full" />
-                    <label for="cadet_identifier">Identifier</label>
+                    <InputNumber v-model="form.id_number" inputId="in_label" class="w-full" required :useGrouping="false"/>
+                    <label for="id_number">Id Number</label>
                 </FloatLabel>
             </div>
             <div class="">

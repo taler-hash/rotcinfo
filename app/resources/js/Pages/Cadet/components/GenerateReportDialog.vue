@@ -102,7 +102,11 @@ function submit() {
             downloadReport()
             close()
             toast.add({ severity: 'success', summary: 'Success', detail: `Generated Report Successfully`, life: 5000 });
-        }
+        },
+        onError: (error) => {
+            console.log(error)
+            toast.add({ severity: 'error', summary: 'Error', detail: error?.cadets, life: 5000 });
+        },
     })
 }
 

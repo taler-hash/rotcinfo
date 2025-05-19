@@ -21,8 +21,9 @@
                 <Avatar :image="props.data.media[0].original_url" class="mr-2" size="xlarge" shape="circle" />
             </template>
         </Column>
+        <Column field="id_number" header="ID Number" sortable />
         <Column field="name" header="Name" sortable />
-        <Column field="course" header="Course" sortable />
+        <Column field="course" header="Course" sortable class="uppercase"/>
         <Column field="age" header="Age" sortable />
         <Column field="sem_1_grade" header="1st Sem" sortable />
         <Column field="sem_2_grade" header="2nd Sem" sortable />

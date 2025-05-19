@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\SuccessRegisteredCadetMail;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
-
+use Illuminate\Validation\ValidationException;
 
 class CadetService {
 
@@ -158,6 +158,18 @@ class CadetService {
 
         return $pdf->download("report({$classYear->cl}).pdf");
         return view('Reports/pdf', $attributes);
+    }
+
+    public function validateReport($request) {
+        $cadets = Cadet::where('class_year_id', $request->class_year_id)
+        ->active();
+
+        if($cadets->count() === 0) {
+            throw ValidationException::withMessages([
+                'cadets' => ['No Cadets found for this class year.'],
+            ]);
+
+        }
     }
 
     public function trackCadet($request) {
