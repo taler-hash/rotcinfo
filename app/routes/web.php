@@ -16,8 +16,11 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
+    if (auth()->user()->hasRole('cadet')) {
+        return redirect('/announcements/public');
+    }
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified', 'role:admin|s1-admin'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
