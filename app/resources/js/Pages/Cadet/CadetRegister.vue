@@ -144,10 +144,10 @@ interface CadetWithRouteTypes extends CadetTypes {
 const courses = ref<{value: string, label: string}[]>([
     { value: 'bsit', label: 'Bachelor of Science in Information Technology' },
     { value: 'bsba', label: 'Bachelor of Science in Business Administration' },
-    { value: 'bspolsci', label: 'Bachelor of Science in Political Science' },
+    { value: 'bspolscie', label: 'Bachelor of Science in Political Science' },
     { value: 'bshm', label: 'Bachelor of Science in Hospital Management' },
-    { value: 'bsed', label: 'Bachelor of Science in Elementary Education' },
-    { value: 'bsse', label: 'Bachelor of Science in Secondary Education' }
+    { value: 'beed', label: 'Bachelor of Science in Elementary Education' },
+    { value: 'bsed', label: 'Bachelor of Science in Secondary Education' }
 ]);
 const completed = ref<boolean>(false)
 const cadet = ref<CadetTypes>({})
