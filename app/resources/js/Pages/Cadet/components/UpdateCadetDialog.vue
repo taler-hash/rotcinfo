@@ -183,12 +183,14 @@ const subjectOptions = ref<string[]>([
     'ms-4',
 ])
 const courses = ref<{value: string, label: string}[]>([
-    { value: 'bsit', label: 'Bachelor of Science in Information Technology' },
-    { value: 'bsba', label: 'Bachelor of Science in Business Administration' },
-    { value: 'bspolscie', label: 'Bachelor of Science in Political Science' },
-    { value: 'bshm', label: 'Bachelor of Science in Hospital Management' },
-    { value: 'beed', label: 'Bachelor of Science in Elementary Education' },
-    { value: 'bsed', label: 'Bachelor of Science in Secondary Education' }
+    { value: 'bsit', label: 'BACHELOR OF SCIENCE IN INFORMATION TECHNOLOGY (BSIT)' },
+    { value: 'bshm', label: 'BACHELOR OF SCIENCE IN HOSPITALITY MANAGEMENT (BSHM)' },
+    { value: 'bsba', label: 'BACHELOR OF SCIENCE IN BUSINESS ADMINISTRATION (BSBA)' },
+    { value: 'bapolscie', label: 'BACHELOR OF ARTS IN POLITICAL SCIENCE (BAPOLSCIE)' },
+    { value: 'beed', label: 'BACHELOR OF ELEMENTARY EDUCATION (BEED)' },
+    { value: 'bsed-english', label: 'BACHELOR OF SECONDARY EDUCATION (BSED) MAJOR IN ENGLISH (BSED-English)' },
+    { value: 'bsed-math', label: 'BACHELOR OF SECONDARY EDUCATION (BSED) MAJOR IN MATHEMATICS (BSED-Math)' },
+    { value: 'bsed-filipino', label: 'BACHELOR OF SECONDARY EDUCATION (BSED) MAJOR IN FILIPINO (BSED-Filipino)' }
 ]);
 const reloadTable = inject<any>('reloadTable')
 const visible = ref<boolean>(false)
