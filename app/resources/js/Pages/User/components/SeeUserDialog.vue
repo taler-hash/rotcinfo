@@ -15,10 +15,6 @@
                     <label for="firstname">First name</label>
                 </FloatLabel>
             </div>
-            <FloatLabel variant="in">
-                <InputText id="username" v-model="form.username" autocomplete="off" disabled class="w-full" />
-                <label for="username">Username</label>
-            </FloatLabel>
             <InputError class="mt-2" :message="form.errors.username" />
         </form>
     </Dialog>

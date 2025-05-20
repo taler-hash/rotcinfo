@@ -58,6 +58,7 @@ const filters = ref<FilterUserTypes>({
     sortType: 'desc',
     rows: 10,
     searchString: '',
+    roles: 's1-admin'
 })
 
 onMounted(() => {

@@ -8,11 +8,8 @@ class UserService {
     public function getUsers($request) {
         $model = new User();
         return User::with('roles')
-        ->s1Admin()
-        ->whereHas('roles', function ($q) use ($request) {
-            $q->when($request?->role, function ($q2) use ($request) {
-                $q2->where('name', $request->role);
-            });
+        ->whereHas('roles', function ($q) {
+            $q->where('name', 's1-admin');
         })
         ->whereAny($model->getFillable(), 'LIKE', "%{$request->searchString}%")
         ->orderBy($request->sortBy, $request->sortType)

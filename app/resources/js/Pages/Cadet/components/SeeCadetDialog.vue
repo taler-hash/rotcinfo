@@ -162,7 +162,7 @@ const courses = ref<{value: string, label: string}[]>([
     { value: 'bsba', label: 'Bachelor of Science in Business Administration' },
     { value: 'bspolsci', label: 'Bachelor of Science in Political Science' },
     { value: 'bshm', label: 'Bachelor of Science in Hospital Management' },
-    { value: 'bsee', label: 'Bachelor of Science in Elementary Education' },
+    { value: 'bsed', label: 'Bachelor of Science in Elementary Education' },
     { value: 'bsse', label: 'Bachelor of Science in Secondary Education' }
 ]);
 

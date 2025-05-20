@@ -6,12 +6,12 @@
                 Cadet Info
             </h2>
         </template>
-        <div class="w-full grid place-items-center pt-10 h-[calc(100vh-10rem)] overflow-y-scroll">
+        <div class="w-full flex  justify-center h-[calc(100vh-170px)] overflow-y-scroll">
             <div
                 v-if="cadet"
-                class=" overflow-hidden"
+                class="h-full py-10"
             >
-                <div class="space-y-4 h-full px-4 bg-white">
+                <div class="space-y-4 h-fit px-4 py-10 bg-white">
                     <div class="">
                         <FloatLabel variant="in">
                             <LazySelect
